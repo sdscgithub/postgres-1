@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  postgresql:
+    #image: blacklabelops/postgres
+    image: postgres:local
+    container_name: postgres
+    hostname: postgres
+    networks:
+      #- confluencenet
+      - atsnet
+    volumes:
+      - postgresqldata:/var/lib/postgresql/data
+    environment:
+      - 'POSTGRES_USER=confluencedb'
+      # CHANGE THE PASSWORD!
+      - 'POSTGRES_PASSWORD=jellyfish'
+      - 'POSTGRES_DB=confluencedb'
+      - 'POSTGRES_ENCODING=UTF8'
+      - 'POSTGRES_COLLATE=C'
+      - 'POSTGRES_COLLATE_TYPE=C'
+    labels:
+      com.blacklabelops.description: "PostgreSQL Database Server"
+      com.blacklabelops.service: "postgresql"
+
+volumes:
+  postgresqldata:
+    external: false
+
+networks:
+  #confluencenet:
+  atsnet:
+    #driver: bridge
+    driver: overlay
